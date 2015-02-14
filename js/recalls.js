@@ -84,7 +84,7 @@ function downloadAsset() {
 
     var uri = encodeURI("http://www.leadyourweb.com/RecallsFile.csv");
     file_path = cordova.file.dataDirectory;
-    alert("About to start transfer");
+   // alert("About to start transfer");
     fileTransfer.download(uri, file_path + 'RecallsFile.csv',
     	function (entry) {
     	    //alert("Success!" + file_path + 'RecallsFile.csv');
@@ -136,7 +136,7 @@ function gotfile(entry) {
                     downloadAsset();
                 }
                 if (countfail >= 2)
-                    alert("Cannot read file data afte 2 downloads!");
+                    alert("Error Occured!");
                 //
                 try {
                     vm.recalls(bet.data);
@@ -243,7 +243,7 @@ function writefile(fileName, data) {
 
         }
         function writenow(writer, fileName, data) {
-            alert('writing now' + data);
+            //alert('writing now' + data);
             writer.onwriteend = function (evt) {
                 // alert("contents of file now 'some sample text'");
                 //writer.truncate(11);
