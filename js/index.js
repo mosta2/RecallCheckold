@@ -141,7 +141,7 @@ function gotfile(entry) {
                 try{
                     vm.recalls(bet.data);
                     vm.getmans(bet.data);
-                    vm.isloading = false;
+                    vm.isloading(false);
                     $('.help').addClass("hidden");
 
                 //alert(JSON.stringify(vm.mans()));
@@ -321,7 +321,7 @@ function readthis(entry,fileName) {
                 }
             }
             ko.mapping.fromJS(son, vm.searchresult);
-            vm.isloading = false;
+            vm.isloading(false);
 
             //vm.searchresult(son);
             //alert('afte reaad:'+vm.searchresult().length);
