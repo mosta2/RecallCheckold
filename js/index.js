@@ -47,7 +47,9 @@ var app = {
 
         console.log('Received Event: ' + id);
         console.log('hello');
-        getfile();
+        try{
+            getfile();
+        } catch (e) { alert(e); }
         readfile('vehicles.txt');
     }
 
