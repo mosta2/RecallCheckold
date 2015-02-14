@@ -49,29 +49,7 @@
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
             //app.initialize();
-            var debugFilePlugin = function () {
-                try {
-                    if (cordova.file && typeof (cordova.file == 'object')) {
-                        alert(JSON.stringify(cordova.file));
-                        if (cordova.file.applicationStorageDirectory) {
-                            alert(cordova.file.applicationStorageDirectory);
-                        }
-                    } else {
-                        alert('cordova.file is a ' + typeof cordova.file + ' value.');
-                    }
-                } catch (e) {
-                    var t = typeof e;
-                    if (t == "object") {
-                        alert(JSON.stringify(e));
-                    } else if (t == "string") {
-                        alert(e);
-                    } else {
-                        alert("typeof e =" + t);
-                    }
-                }
-            };
-
-            debugFilePlugin();
+            
         </script>
     </body>
 </html>

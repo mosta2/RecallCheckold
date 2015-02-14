@@ -47,9 +47,7 @@ var app = {
 
         console.log('Received Event: ' + id);
         console.log('hello');
-        try{
-            getfile();
-        } catch (e) { alert(e); }
+        getfile();
         readfile('vehicles.txt');
     }
 
@@ -87,10 +85,10 @@ function downloadAsset() {
 
     var uri = encodeURI("http://www.leadyourweb.com/RecallsFile.csv");
     file_path = cordova.file.dataDirectory;
-    alert("About to start transfer");
+    //alert("About to start transfer");
     fileTransfer.download(uri, file_path + 'RecallsFile.csv',
     	function (entry) {
-    	    alert("Success!" + file_path + 'RecallsFile.csv');
+    	    //alert("Success!" + file_path + 'RecallsFile.csv');
     	    //checkfileexist(file_path + 'test.txt');
     	    appStart(entry);
     	},
@@ -113,8 +111,8 @@ function gotfile(entry) {
     var msPerYear = msPerDay * 365;
 
     var days = diff / msPerDay;
-    if (days < 7) {
-        alert('refres');
+    if (days > 7) {
+        //alert('refres');
         downloadAsset();
 
     }
