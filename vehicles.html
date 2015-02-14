@@ -186,7 +186,7 @@
                 });
 
                 self.swiperow = function (reg) {
-                    alert(reg);
+                    //alert(reg);
                     var i;
                     for (i = 0; i < self.searchresult().length; i++) {
                         if (self.searchresult()[i].Reg == reg) {
@@ -426,7 +426,7 @@
                 try {
 
                     for (i = 0; i < vm.searchresult().length; i++) {
-                        alert(vm.searchresult()[i].Reg() + '>>' + m)
+                        //alert(vm.searchresult()[i].Reg() + '>>' + m)
                         if (vm.searchresult()[i].Reg() == m) {
                             vm.searchresult().splice(i, 1);
                         }
@@ -470,6 +470,9 @@
             }
             .center {
                 text-align:center;
+            }
+            .hidden {
+                display:none;
             }
         </style>
     </body>

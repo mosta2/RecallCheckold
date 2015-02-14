@@ -245,7 +245,7 @@ function writefile(fileName, data) {
 
         }
         function writenow(writer, fileName, data) {
-            alert('writing now' + data);
+            //alert('writing now' + data);
             writer.onwriteend = function (evt) {
                // alert("contents of file now 'some sample text'");
                 //writer.truncate(11);
