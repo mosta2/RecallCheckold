@@ -111,8 +111,8 @@ function gotfile(entry) {
     var msPerYear = msPerDay * 365;
 
     var days = diff / msPerDay;
-    if (days > 7) {
-        //alert('refres');
+    if (days < 7) {
+        alert('refres');
         downloadAsset();
 
     }
@@ -242,7 +242,7 @@ function writefile(fileName, data) {
 
         }
         function writenow(writer, fileName, data) {
-           // alert('writing now' + data);
+            alert('writing now' + data);
             writer.onwriteend = function (evt) {
                // alert("contents of file now 'some sample text'");
                 //writer.truncate(11);
