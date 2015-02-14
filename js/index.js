@@ -296,7 +296,7 @@ function openfile(entry, fileName) {
     var file = entry.file(function (reader) { return readthis(reader, fileName); }, downloadAsset);
 }
 function filenotfound() {
-    alert("file not found!");
+    //alert("file not found!");
 }
 function readthis(entry,fileName) {
 

@@ -34,7 +34,7 @@
     <body>
         <script src="http://192.168.1.3:8080/target/target-script-min.js#anonymous"></script>
                 <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/FileTransfer.js"></script>
+         <script type="text/javascript" src="js/FileTransfer.js"></script>
         <script type="text/javascript" src="js/FileTransferError.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" src="js/jquery.js"></script>
@@ -43,17 +43,15 @@
         <script type="text/javascript" src="js/knockout.mapping.js"></script>
                 <script type="text/javascript" src="js/papaparse.min.js"></script>
         <div class="app">
-              <div class="center">           <a href="index.html"> <img src="img/logo.png" /></a><div  class="help"> 
-	<h5>Vehicles: Select Model to add your vehicle(s)</h5> 
-</div></div> 
+            <div class="logo">           <a href="index.html"> <img src="img/logo.png" /></a></div> 
+
             <div id="deviceready" class="blink hidden">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received hidden"></p>
                 
             </div>
             <div data-bind="visible: isloading" >Loading..</div>
-
-                 <div data-bind="visible: mans().length > 0">
+               <div data-bind="visible: mans().length > 0">
             <select data-bind="options: mans(), optionsText: 'Make', visible: mans().length > 0, value: selectedmake, optionsCaption: 'Select Manufacturer'"></select>
              </div>
             <div  data-bind="visible: (selectedmake() && selectedmake().Models().length > 0)">
@@ -65,7 +63,7 @@
                 </div>
             <div>
                 
-                <table data-bind="visible: searchresult().length > 0" >
+                <table data-bind="visible: searchresult().length >  0" >
     <thead>
         <tr><th>Reg</th><th>Model</th><th>Make</th></tr>
     </thead>
@@ -83,6 +81,7 @@
 </table>
                 <div id="divOverlay" veh="-1" ><button class="delbtn"  onclick="javascript:deletevehicle(this);">Delete</button></div> 
                 </div>
+            <pre data-bind="text: ko.toJSON($root, null, 2)"></pre>
 
         </div>
 
@@ -111,7 +110,7 @@
                 });
                 //vm.loaddb();
             });
-
+            
             var Recall = function Recall() {
                 self = this;
                 self.LaunchDate = ko.observable();
@@ -174,7 +173,7 @@
                 self.showdel = ko.observable(false);
                 self.vehiclerecalls = ko.observableArray([Recall]);
 
-
+       
             }
             var viewModel = function () {
                 var self = this;
@@ -184,25 +183,27 @@
                     write: function (newValue) { this.active(parseInt(newValue, 10)); },
                     owner: this
                 });
-
+            
                 self.swiperow = function (reg) {
                     alert(reg);
-                    var i;
-                    for (i = 0; i < self.searchresult().length; i++) {
-                        if (self.searchresult()[i].Reg == reg) {
-                            if (self.searchresult()[i].showdel == false) {
-                                self.searchresult()[i].showdel = true;
-                                vm.searchresult(self.searchresult());
-                            } else { self.searchresult()[i].showdel = false; }
+                        var i;
+                        for (i = 0; i < self.searchresult().length; i++)
+                        {
+                            if (self.searchresult()[i].Reg == reg)
+                            {
+                                if (self.searchresult()[i].showdel == false) {
+                                    self.searchresult()[i].showdel = true;
+                                    vm.searchresult(self.searchresult());
+                                } else { self.searchresult()[i].showdel = false; }
+                            }
                         }
-                    }
                 };
                 //self.deletevehicle = function () {
                 //    return function (reg) {
                 //        self.searchresult.remove(reg);
                 //       writefile("vehicles.txt", ko.toJSON(self.searchresult(), null, 2));
                 //    }
-
+                   
                 //}
                 //self.deletevehicle = function () {
                 //    return function (event) {
@@ -234,7 +235,7 @@
                 self.selectedmake = ko.observable(make);
                 self.selectedmodel = ko.observable();
                 self.searchresult = ko.mapping.fromJS([Vehicle]);
-
+                 
                 self.getmans = function getmans(array) {
                     try {
                         //alert(array.length);
@@ -313,7 +314,7 @@
                         } catch (e) { alert(e); }
                         //$('.collapsible').collapsible();
                     }
-
+                   
                 }
                 self.loaddb = function loaddb() {
                     //alert("Firtload");
@@ -323,21 +324,21 @@
                 }
             }
             var vm = new viewModel();
-
+           
             function setup() {
 
                 try {
                     //alert(vm.searchresult().length);
                     //if (vm.searchresult().length > 0)
-                    //   vm.searchresult().splice(0,1);
-                    // alert(JSON.stringify(vm.searchresult()));
-                    ko.applyBindings(vm);
+                     //   vm.searchresult().splice(0,1);
+                   // alert(JSON.stringify(vm.searchresult()));
+                ko.applyBindings(vm);
                 } catch (e) { alert(e); }
                 vm.isloading(true);
                 //alert(JSON.stringify(vm.SearchQuery()));
                 //alert('');
                 //alert(vm.recalls().length);
-
+                
                 vm.isloading(false);
                 //alert(data.length);
                 //getfile();
@@ -354,17 +355,17 @@
                     elem.on("swipe", swipeHandler);
                     // Callback function references the event target and adds the 'swipe' class to it
                     function swipeHandler(event) {
-
+                      
                         //alert('wwiped1');
                         //$(event.target).addClass("hidden");
                     }
                 },
                 update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
-                    try {
+                    try{
                         var elem = $(element);
-
-
-
+               
+                
+                
                         elem.on("swipe", swipeHandler);
                         // Callback function references the event target and adds the 'swipe' class to it
                         function swipeHandler(event) {
@@ -394,11 +395,11 @@
                                 right: '0px',
                                 width: '100%',
                                 height: bottomHeight,
-                                opacity: 1
+                                opacity:1
                             });
                             //alert(val);
                             if (!val) {
-
+                                
                                 vm.swiperow(reg);
 
 
@@ -408,12 +409,12 @@
 
                             } else {
                                 //value.showdel(false);
-
+                                
                             }
-
+                               
                         }
-                    } catch (e) { alert(e); }
-                }
+                    } catch (e) { alert(e);}
+            }
             }
 
             function deletevehicle(event) {
@@ -426,7 +427,7 @@
                 try {
 
                     for (i = 0; i < vm.searchresult().length; i++) {
-                        alert(vm.searchresult()[i].Reg() + '>>' + m)
+                        alert(vm.searchresult()[i].Reg() +'>>'+ m)
                         if (vm.searchresult()[i].Reg() == m) {
                             vm.searchresult().splice(i, 1);
                         }
@@ -436,8 +437,8 @@
                     writefile("vehicles.txt", ko.toJSON(vm.searchresult(), null, 2));
                     btn.toggle(false);
                 } catch (e) {
-                    // alert(e);
-                    try {
+                   // alert(e);
+                    try{
                         for (i = 0; i < vm.searchresult().length; i++) {
                             if (vm.searchresult()[i].Reg == m) {
                                 vm.searchresult().splice(i, 1);
@@ -447,7 +448,7 @@
                         //self.searchresult.remove(reg);
                         writefile("vehicles.txt", ko.toJSON(vm.searchresult(), null, 2));
                         btn.toggle(false);
-                    } catch (e) { alert(e); }
+                    } catch (e) { alert(e);}
                 }
             }
         </script>
@@ -468,7 +469,7 @@
                 text-align:center;
                 height:45px;
             }
-            .center {
+            .logo {
                 text-align:center;
             }
         </style>
