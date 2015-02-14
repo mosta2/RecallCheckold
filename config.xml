@@ -63,5 +63,4 @@
   <gap:splash src="www/res/screen/ios/screen-ipad-landscape.png" gap:platform="ios" width="1024" height="768"/>
   <gap:splash src="www/res/screen/windows-phone/screen-portrait.jpg" gap:platform="winphone"/>
   <access origin="*"/>
-<uses-sdk    android:minSdkVersion="8"    android:targetSdkVersion="16" />
 </widget>
