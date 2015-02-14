@@ -48,7 +48,6 @@ var app = {
         console.log('Received Event: ' + id);
         console.log('hello');
         getfile();
-        readfile('vehicles.txt');
     }
 
 };
@@ -98,7 +97,7 @@ function downloadAsset() {
     	});
 }
 function gotfile(entry) {
-   // alert(entry.lastModifiedDate);
+    // alert(entry.lastModifiedDate);
     var d = new Date();
     var filedate = entry.lastModifiedDate;
     var now = d.getTime();
@@ -117,17 +116,18 @@ function gotfile(entry) {
 
     }
     else {
-       // alert('opening');
+        // alert('opening');
         var reader = new FileReader();
         reader.onloadend = function (evt) {
             //alert("read success");
             try {
+                vm.isloading(true);
+
                 //data = $.csv2Array(evt.target.result);
                 // Parse CSV string
-               // alert(evt.target.result);
+                // alert(evt.target.result);
                 var bet = Papa.parse(evt.target.result.toString(), { header: true });
                 //alert(JSON.stringify(bet));
-                vm.isloading(true);
                 //var m = processData(evt.target.result);
                 //alert(bet.data);
 
@@ -138,10 +138,11 @@ function gotfile(entry) {
                 if (countfail >= 2)
                     alert("Cannot read file data afte 2 downloads!");
                 //
-                try{
+                try {
                     vm.recalls(bet.data);
                     vm.getmans(bet.data);
-                //alert(JSON.stringify(vm.mans()));
+                    readfile('vehicles.txt');
+                    //alert(JSON.stringify(vm.mans()));
                 } catch (e) { alert(e) }
                 //ko.mapping.fromJS(mans, vm.mans());
                 //alert(data.length);
@@ -197,10 +198,10 @@ function writefile(fileName, data) {
             fileEntry.createWriter(function (writer) { return gotFileWriter(writer, fileName, data); }, fail);
         }
         function gotFileWriter(writer, fileName, data) {
-           // alert(fileName);
-           // alert(data);
+            // alert(fileName);
+            // alert(data);
             writer.onwriteend = function (evt) {
-               // alert("contents of file now 'some sample text'");
+                // alert("contents of file now 'some sample text'");
                 //writer.truncate(11);
                 writer.onwriteend = function (evt) {
                     //console.log("contents of file now 'some sample'");
@@ -244,7 +245,7 @@ function writefile(fileName, data) {
         function writenow(writer, fileName, data) {
             alert('writing now' + data);
             writer.onwriteend = function (evt) {
-               // alert("contents of file now 'some sample text'");
+                // alert("contents of file now 'some sample text'");
                 //writer.truncate(11);
                 writer.onwriteend = function (evt) {
                     //console.log("contents of file now 'some sample'");
@@ -256,7 +257,7 @@ function writefile(fileName, data) {
                 };
             };
             writer.write(data);
-           
+
         }
         function nodir(entry) {
 
@@ -286,9 +287,9 @@ function processData(allText) {
 
 
 function readfile(fileName) {
-    try{
+    try {
         store = cordova.file.dataDirectory;
-    } catch (e) { alert(e);}
+    } catch (e) { alert(e); }
     window.resolveLocalFileSystemURL(store + fileName, function (reader) { return openfile(reader, fileName); }, filenotfound);
 }
 function openfile(entry, fileName) {
@@ -298,7 +299,7 @@ function openfile(entry, fileName) {
 function filenotfound() {
     alert("file not found!");
 }
-function readthis(entry,fileName) {
+function readthis(entry, fileName) {
 
     //alert('opening');
     var reader = new FileReader();
@@ -308,9 +309,8 @@ function readthis(entry,fileName) {
             var son = ko.utils.parseJson(evt.target.result);
             //ko.mapping.fromJS(son, vm.searchresult());
             //alert(evt.target.result);
-            var i ;
-            for (i = 0; i < son.length; i++)
-            {
+            var i;
+            for (i = 0; i < son.length; i++) {
                 if (!son[i]) {
 
                     son.splice(i, 1);
@@ -320,10 +320,34 @@ function readthis(entry,fileName) {
             ko.mapping.fromJS(son, vm.searchresult);
             //vm.searchresult(son);
             //alert('afte reaad:'+vm.searchresult().length);
-            //alert(JSON.stringify(vm.searchresult()));
-            //alert(JSON.stringify(vm.searchresult()));
-            //alert(son);
+            //var m = ko.mapping.toJSON(vm.searchresult()[0]);
+            // alert(m);
+            var i = 0;
+            for (i; i < vm.searchresult().length;i++)
+            {
+                var array;
+                array = ko.utils.arrayFilter(vm.recalls(), function (item) {
+                    return item.Model == vm.searchresult()[i].Model();
+                });
+                //alert('the rec:' + JSON.stringify(array));
+
+                array.sort(function (l, r) {
+                    return (Date.parse(l.LaunchDate) == Date.parse(r.LaunchDate) ? 0 : (Date.parse(l.LaunchDate) > Date.parse(r.LaunchDate) ? -1 : 1))
+                });
+                //ko.mapping.fromJS(array, vm.currentreg().vehiclerecalls);
+                vm.searchresult()[i].vehiclerecalls(array);
+                //alert('len' + vm.currentreg().vehiclerecalls().length);
+                var l = JSON.stringify(vm.searchresult()[i].vehiclerecalls());
+                //alert('>>>' + l);
+            }
+            vm.currentreg(vm.searchresult()[0]);
+            //alert(ko.mapping.toJSON(vm.currentreg()));
+            vm.idxcurrentreg(0);
+            $('.collapsible').collapsible();
             $('.help').addClass("hidden");
+            vm.isloading(false);
+            //alert(son);
+
         } catch (e) { alert(e) }
     };
     reader.readAsText(entry);
