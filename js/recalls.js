@@ -304,7 +304,7 @@ function readthis(entry, fileName) {
     //alert('opening');
     var reader = new FileReader();
     reader.onloadend = function (evt) {
-        //alert("read success");
+        alert("read success");
         try {
             var son = ko.utils.parseJson(evt.target.result);
             //ko.mapping.fromJS(son, vm.searchresult());
@@ -319,36 +319,43 @@ function readthis(entry, fileName) {
             }
             ko.mapping.fromJS(son, vm.searchresult);
             //vm.searchresult(son);
-            //alert('afte reaad:'+vm.searchresult().length);
+            alert('afte reaad:'+vm.searchresult().length);
             //var m = ko.mapping.toJSON(vm.searchresult()[0]);
             // alert(m);
             var i = 0;
-            for (i; i < vm.searchresult().length;i++)
-            {
-                var array;
-                array = ko.utils.arrayFilter(vm.recalls(), function (item) {
-                    return item.Model == vm.searchresult()[i].Model();
-                });
-                //alert('the rec:' + JSON.stringify(array));
+            if (vm.searchresult().length > 0) {
+                for (i; i < vm.searchresult().length; i++) {
+                    var array;
+                    array = ko.utils.arrayFilter(vm.recalls(), function (item) {
+                        return item.Model == vm.searchresult()[i].Model();
+                    });
+                    alert('the rec:' + JSON.stringify(array));
 
-                array.sort(function (l, r) {
-                    return (Date.parse(l.LaunchDate) == Date.parse(r.LaunchDate) ? 0 : (Date.parse(l.LaunchDate) > Date.parse(r.LaunchDate) ? -1 : 1))
-                });
-                //ko.mapping.fromJS(array, vm.currentreg().vehiclerecalls);
-                vm.searchresult()[i].vehiclerecalls(array);
-                //alert('len' + vm.currentreg().vehiclerecalls().length);
-                var l = JSON.stringify(vm.searchresult()[i].vehiclerecalls());
-                //alert('>>>' + l);
+                    array.sort(function (l, r) {
+                        return (Date.parse(l.LaunchDate) == Date.parse(r.LaunchDate) ? 0 : (Date.parse(l.LaunchDate) > Date.parse(r.LaunchDate) ? -1 : 1))
+                    });
+                    //ko.mapping.fromJS(array, vm.currentreg().vehiclerecalls);
+                    if (!vm.searchresult()[i]) {
+                        vm.searchresult().splice(i, 1);
+                        continue
+                    }
+                    alert(JSON.stringify(vm.searchresult()[i]));
+                    //vm.searchresult()[i].vehiclerecalls(array);
+                    //alert('len' + vm.currentreg().vehiclerecalls().length);
+                    //var l = JSON.stringify(vm.searchresult()[i].vehiclerecalls());
+                    //alert('>>>' + l);
+                }
+
+                vm.currentreg(vm.searchresult()[0]);
+                //alert(ko.mapping.toJSON(vm.currentreg()));
+                vm.idxcurrentreg(0);
+                $('.collapsible').collapsible();
+                $('.help').addClass("hidden");
+                vm.isloading(false);
             }
-            vm.currentreg(vm.searchresult()[0]);
-            //alert(ko.mapping.toJSON(vm.currentreg()));
-            vm.idxcurrentreg(0);
-            $('.collapsible').collapsible();
-            $('.help').addClass("hidden");
-            vm.isloading(false);
             //alert(son);
 
-        } catch (e) { alert(e) }
+        } catch (e) { alert('el>>' +e) }
     };
     reader.readAsText(entry);
 

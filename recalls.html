@@ -43,7 +43,7 @@
         <script type="text/javascript" src="js/knockout.mapping.js"></script>
                 <script type="text/javascript" src="js/papaparse.min.js"></script>
         <div class="app">
-            <div class="center">           <a href="index.html"> <img src="img/logo.png" /></a><div  class="help"> 
+            <div class="center">           <a href="index.html" data-ajax="false"> <img src="img/logo.png" /></a><div  class="help"> 
 	<h5>Recalls: Navigate to view your vehicle Recalls</h5> 
 </div> 
             <div data-bind="visible: isloading" >Loading..</div></div> 
@@ -73,9 +73,9 @@
                         </div>
                          <!-- /ko -->
              <!-- /ko -->
-        <!-- ko if: vm.currentreg().vehiclerecalls && vm.currentreg().vehiclerecalls().length ==0 -->  
+        <!-- ko if: (!vm.currentreg().vehiclerecalls) || (vm.currentreg().vehiclerecalls && vm.currentreg().vehiclerecalls().length ==0) -->  
                        <div>
-                Duh! We need a vehicle,  <a href="vehicles.html">Click here to add your Vehicles</a></div>  
+                Duh! We need a vehicle,  <a href="vehicles.html"  data-ajax="false">Click here to add your Vehicles</a></div>  
           
               
              <!-- /ko -->  </div>
@@ -86,7 +86,7 @@
             var data;
              
 
-            $(document).ready(function () {
+            $(document).on('pageinit', function () {
                 try{
                     setup();
                     app.initialize();

@@ -32,7 +32,6 @@
         <title>Hello World</title>
     </head>
     <body>
-        <script src="http://192.168.1.3:8080/target/target-script-min.js#anonymous"></script>
                 <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/FileTransfer.js"></script>
         <script type="text/javascript" src="js/FileTransferError.js"></script>
@@ -43,7 +42,7 @@
         <script type="text/javascript" src="js/knockout.mapping.js"></script>
                 <script type="text/javascript" src="js/papaparse.min.js"></script>
         <div class="app"> 
-              <div class="center">           <a href="index.html" data-prefetch> <img src="img/logo.png" /></a><div  class="help"> 
+              <div class="center">           <a href="index.html" data-ajax="false"> <img src="img/logo.png" /></a><div  class="help"> 
 	<h5>Vehicles: Select Model to add your vehicle(s)</h5> 
 </div></div> 
             <div id="deviceready" class="blink hidden">
@@ -91,7 +90,7 @@
             var data;
 
 
-            $(document).ready(function () {
+            $(document).on('pageinit', function () {
 
                 setup();
                 app.initialize();
