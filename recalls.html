@@ -55,7 +55,7 @@
                 
             </div>
             
-  <!-- ko if: vm.currentreg().vehiclerecalls && vm.currentreg().vehiclerecalls().length >0 -->  
+  <!-- ko if:  vm.currentreg && vm.currentreg().vehiclerecalls && vm.currentreg().vehiclerecalls().length >0 -->  
            
 <div data-role="header">
 	<a href="index.html" data-bind="visible: (idxcurrentreg() > 0), click: function (index) { setcurrentreg(idxcurrentreg() - 1,index) }" data-icon="arrow-l">&nbsp;</a>
@@ -73,12 +73,17 @@
                         </div>
                          <!-- /ko -->
              <!-- /ko -->
-        <!-- ko if: (!vm.currentreg().vehiclerecalls) || (vm.currentreg().vehiclerecalls && vm.currentreg().vehiclerecalls().length ==0) -->  
+        <!-- ko if:  vm.currentreg().vehiclerecalls && vm.currentreg().vehiclerecalls().length ==0 -->  
                        <div>
-                Duh! We need a vehicle,  <a href="vehicles.html"  data-ajax="false">Click here to add your Vehicles</a></div>  
+                No Recalls for this vehicle</div>  
           
               
-             <!-- /ko -->  </div>
+             <!-- /ko -->  
+                       <div data-bind="visible: novehicles">
+                Duh! We need a vehicle,  <a href="vehicles.html" data-ajax="false">Click here to add your Vehicles</a></div>  
+          
+              
+        </div>
        
 
         <script type="text/javascript">
@@ -179,6 +184,7 @@
                     write: function (newValue) { this.active(parseInt(newValue, 10)); },
                     owner: this
                 });
+                self.novehicles = ko.observable(false);
                 self.currentreg = ko.observable(Vehicle);
                 self.idxcurrentreg = ko.observable(0);
                 self.swiperow = function (reg) {
@@ -288,8 +294,8 @@
                         //alert(vm.idxcurrentreg());
                         var reg = vm.searchresult()[i];
                         var m = JSON.stringify(reg)                    ;
-                        //alert(m);
-                        //alert(i);
+                        alert(m);
+                        alert(i);
                         
                         //array.sort(function (l, r) {
                         //    return (Date.parse(l.LaunchDate) == Date.parse(r.LaunchDate) ? 0 : (Date.parse(l.LaunchDate) > Date.parse(r.LaunchDate) ? -1 : 1))
@@ -304,7 +310,7 @@
                         array = ko.utils.arrayFilter(vm.recalls(), function (item) {
                             return item.Model == vm.searchresult()[i].Model();
                         });
-                        //alert('the rec:' +JSON.stringify(array));
+                        alert('the rec:' +JSON.stringify(array));
 
                         array.sort(function (l, r) {
                             return (Date.parse(l.LaunchDate) == Date.parse(r.LaunchDate) ? 0 : (Date.parse(l.LaunchDate) > Date.parse(r.LaunchDate) ? -1 : 1))
@@ -313,7 +319,7 @@
                         vm.searchresult()[i].vehiclerecalls(array);
                         //alert('len' + vm.currentreg().vehiclerecalls().length);
                         var l = JSON.stringify(vm.searchresult()[i].vehiclerecalls());
-                        //alert('>>>' + l);
+                        alert('>>>' + l);
                        // vm.currentreg().vehiclerecalls(array);
                         //self.idxcurrentreg(index);
                         $('.collapsible').collapsible();
@@ -424,7 +430,7 @@
                 try {
 
                     for (i = 0; i < vm.searchresult().length; i++) {
-                       // alert(vm.searchresult()[i].Reg() +'>>'+ m)
+                        alert(vm.searchresult()[i].Reg() +'>>'+ m)
                         if (vm.searchresult()[i].Reg() == m) {
                             vm.searchresult().splice(i, 1);
                         }

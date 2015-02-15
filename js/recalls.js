@@ -304,7 +304,7 @@ function readthis(entry, fileName) {
     //alert('opening');
     var reader = new FileReader();
     reader.onloadend = function (evt) {
-        //alert("read success");
+       // alert("read success");
         try {
             var son = ko.utils.parseJson(evt.target.result);
             //ko.mapping.fromJS(son, vm.searchresult());
@@ -340,7 +340,7 @@ function readthis(entry, fileName) {
                         continue
                     }
                     //alert(JSON.stringify(vm.searchresult()[i]));
-                    //vm.searchresult()[i].vehiclerecalls(array);
+                    vm.searchresult()[i].vehiclerecalls(array);
                     //alert('len' + vm.currentreg().vehiclerecalls().length);
                     //var l = JSON.stringify(vm.searchresult()[i].vehiclerecalls());
                     //alert('>>>' + l);
@@ -353,11 +353,10 @@ function readthis(entry, fileName) {
                 $('.help').addClass("hidden");
                 vm.isloading(false);
             }
+            else { vm.novehicles(true); vm.isloading(false); }
             //alert(son);
 
-        } catch (e) {
-            //alert('el>>' + e)
-        }
+        } catch (e) { alert('el>>' +e) }
     };
     reader.readAsText(entry);
 
