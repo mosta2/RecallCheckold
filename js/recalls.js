@@ -329,7 +329,7 @@ function readthis(entry, fileName) {
                     array = ko.utils.arrayFilter(vm.recalls(), function (item) {
                         return item.Model == vm.searchresult()[i].Model();
                     });
-                    alert('the rec:' + JSON.stringify(array));
+                    //alert('the rec:' + JSON.stringify(array));
 
                     array.sort(function (l, r) {
                         return (Date.parse(l.LaunchDate) == Date.parse(r.LaunchDate) ? 0 : (Date.parse(l.LaunchDate) > Date.parse(r.LaunchDate) ? -1 : 1))
@@ -339,7 +339,7 @@ function readthis(entry, fileName) {
                         vm.searchresult().splice(i, 1);
                         continue
                     }
-                    alert(JSON.stringify(vm.searchresult()[i]));
+                    //alert(JSON.stringify(vm.searchresult()[i]));
                     //vm.searchresult()[i].vehiclerecalls(array);
                     //alert('len' + vm.currentreg().vehiclerecalls().length);
                     //var l = JSON.stringify(vm.searchresult()[i].vehiclerecalls());

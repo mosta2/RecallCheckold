@@ -288,8 +288,8 @@
                         //alert(vm.idxcurrentreg());
                         var reg = vm.searchresult()[i];
                         var m = JSON.stringify(reg)                    ;
-                        alert(m);
-                        alert(i);
+                        //alert(m);
+                        //alert(i);
                         
                         //array.sort(function (l, r) {
                         //    return (Date.parse(l.LaunchDate) == Date.parse(r.LaunchDate) ? 0 : (Date.parse(l.LaunchDate) > Date.parse(r.LaunchDate) ? -1 : 1))
@@ -304,7 +304,7 @@
                         array = ko.utils.arrayFilter(vm.recalls(), function (item) {
                             return item.Model == vm.searchresult()[i].Model();
                         });
-                        alert('the rec:' +JSON.stringify(array));
+                        //alert('the rec:' +JSON.stringify(array));
 
                         array.sort(function (l, r) {
                             return (Date.parse(l.LaunchDate) == Date.parse(r.LaunchDate) ? 0 : (Date.parse(l.LaunchDate) > Date.parse(r.LaunchDate) ? -1 : 1))
@@ -313,7 +313,7 @@
                         vm.searchresult()[i].vehiclerecalls(array);
                         //alert('len' + vm.currentreg().vehiclerecalls().length);
                         var l = JSON.stringify(vm.searchresult()[i].vehiclerecalls());
-                        alert('>>>' + l);
+                        //alert('>>>' + l);
                        // vm.currentreg().vehiclerecalls(array);
                         //self.idxcurrentreg(index);
                         $('.collapsible').collapsible();
@@ -424,7 +424,7 @@
                 try {
 
                     for (i = 0; i < vm.searchresult().length; i++) {
-                        alert(vm.searchresult()[i].Reg() +'>>'+ m)
+                       // alert(vm.searchresult()[i].Reg() +'>>'+ m)
                         if (vm.searchresult()[i].Reg() == m) {
                             vm.searchresult().splice(i, 1);
                         }
