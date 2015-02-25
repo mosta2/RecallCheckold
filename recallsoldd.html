@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 >
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, target-densitydpi=medium-dpi, user-scalable=0" />
+        
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+        
+        <title>Hello World</title>
+    </head>
+    <body>
+        <div class="app">
+            <div id="deviceready" class="blink hidden">
+                <p class="event listening">Connecting to Device</p>
+                <p class="event received hidden"></p>
+                
+            </div>
+            
+            <div data-bind="visible: isloading" >Loading..</div>
+               <div data-bind="visible: mans().length > 0">
+            <select data-bind="options: mans(), optionsText: 'Make', visible: mans().length > 0, value: selectedmake, optionsCaption: 'Select Manufacturer'"></select>
+             </div>
+            <div  data-bind="visible: (selectedmake() && selectedmake().Models().length > 0)"><select data-bind="    options: (selectedmake() && selectedmake().Models()) ? selectedmake().Models() : [], visible: (selectedmake() && selectedmake().Models().length > 0), value: selectedmodel, optionsCaption: 'Select Model'"></select>
+                </div>
+            <div  data-bind="visible: selectedmodel()">
+            <input type="text" data-bind="value: newvehicle" >
+                <button data-bind="click: $root.performsearch()" value="add">Add</button>
+                </div>
+            <div>
+
+                    <div data-role="collapsible-set" data-theme="b"  data-bind="foreach: searchresult" data-content-theme="d" >
+                <div   class="collapsible" >
+                    <h3 data-bind="text: Concern"></h3>
+                    <p data-bind="text: Defect"></p>
+                       
+                </div>
+                        </div>
+                </div>
+            <pre data-bind="text: ko.toJSON($root, null, 2)"></pre>
+
+            <a href="index.html"> <img src="img/logo.png" /></a>
+            <a href="aboutus.html"><img src="img/iconaboutus.jpg" /></a>
+            <a href="quickcheck.html"><img src="img/iconquickcheck.jpg" /></a>
+            <a href="recalls.html"><img src="img/iconrecalls.jpg" /></a>
+            <a href="reminders.html"><img src="img/iconreminders.jpg" /></a>
+            <a href="vehicles.html"><img src="img/iconvehicles.jpg" /></a>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js"></script>
+        <script type="text/javascript" src="js/knockout.js"></script>
+        <script type="text/javascript" src="js/knockout.mapping.js"></script>
+    <script  type="text/javascript" src="js/jquery.mobile-1.4.5.js"></script>
+                <script type="text/javascript" src="js/papaparse.min.js"></script>
+
+        <script type="text/javascript">
+            var data;
+            app.initialize();
+
+
+            $(document).ready(function () {
+
+                setup();
+
+            });
+            var Recall = function Recall() {
+                self = this;
+                self.LaunchDate = ko.observable();
+                self.RecallsNumber = ko.observable();
+                self.Make = ko.observable();
+                self.RecallsModelInformation = ko.observable();
+                self.Concern = ko.observable();
+                self.Defect = ko.observable();
+                self.Remedy = ko.observable();
+                self.VehicleNumbers = ko.observable();
+                self.Manufacturer = ko.observable();
+                self.Model = ko.observable();
+                self.VINStart = ko.observable();
+                self.VINEnd = ko.observable();
+                self.BuildStart = ko.observable();
+                self.BuildEnd = ko.observable();
+
+            }
+            var make = function () {
+                self = this;
+                self.Make = ko.observable('ggg');
+                self.Models = ko.observableArray([]);
+
+                self.getmodels = function getmodels() {
+                    try {
+
+                        var flags = [], output = [], l = vm.recalls().length, i;
+                        for (i = 0; i < l; i++) {
+
+                            if (vm.recalls()[i].Make == self.Make()) {
+                                //alert('getting models for ' + self.Make() + '' + vm.recalls()[i].Model + '<<' + vm.recalls()[i].Model);
+                                var found = false;
+                                for (var j = 0; j < output.length; j++) {
+                                    if (output[j] === vm.recalls()[i].Model) {
+                                        found = true;
+                                    }
+                                }
+                                if (!found) output.push(vm.recalls()[i].Model);
+
+                                //alert(JSON.stringify(output));
+                                //output.push('hello');
+
+                            }
+                        }
+                        //ko.mapping.fromJS(output,this.mans());
+                        //alert(output + '<<');
+                        self.Models(output);
+                        // alert(this.mans().length);
+                        //alert(JSON.stringify(output));
+                    } catch (e) { alert('103' + e); }
+                }
+            }
+
+            var viewModel = function () {
+                var self = this;
+                this.active = ko.observable(0);
+                this.selected = ko.computed({
+                    read: function () { return this.active().toString(); },
+                    write: function (newValue) { this.active(parseInt(newValue, 10)); },
+                    owner: this
+                });
+                self.SearchQuery = ko.observable('ggg');
+                self.recalls = ko.observableArray([]);
+                self.isloading = ko.observable(false);
+                self.mans = ko.observableArray([]);
+                self.selectedmake = ko.observable(make);
+                self.selectedmodel = ko.observable();
+                self.searchresult = ko.observableArray([Recall]);
+
+                self.getmans = function getmans(array) {
+                    try {
+                        //alert(array.length);
+                        var flags = [], output = [], l = array.length, i;
+                        for (i = 0; i < l; i++) {
+                            if (flags[array[i].Make]) continue;
+                            flags[array[i].Make] = true;
+                            //alert(array[i].Make);
+                            var mymake = new make();
+                            mymake.Make(array[i].Make);
+                            //alert('get models of ' + array[i].Make);
+                            mymake.getmodels(array[i].Make);
+                            //mymake.Models(models);
+                            output.push(mymake);
+                            // alert()
+                        }
+                        //alert(output);
+                        //ko.mapping.fromJS(output,this.mans());
+                        this.mans(output);
+                        // alert(this.mans().length);
+                        //alert(JSON.stringify(output));
+                    } catch (e) { alert('145' + e); }
+                };
+                self.performsearch = function performsearch() {
+                    var i;
+                    if (self.selectedmodel())
+                        i = self.selectedmodel();
+                    //alert(i);
+                    var array;
+                    array = ko.utils.arrayFilter(self.recalls(), function (item) {
+                        return item.Model == self.selectedmodel();
+                    });
+                    //alert(JSON.stringify(array));
+
+                    array.sort(function (l, r) {
+                        return (Date.parse(l.LaunchDate) == Date.parse(r.LaunchDate) ? 0 : (Date.parse(l.LaunchDate) > Date.parse(r.LaunchDate) ? -1 : 1))
+                    });
+                    self.searchresult(array);
+
+                    $('.collapsible').collapsible();
+                }
+            }
+            var vm = new viewModel();
+            function setup() {
+
+
+                ko.applyBindings(vm);
+                vm.isloading(true);
+                //alert(JSON.stringify(vm.SearchQuery()));
+
+                //alert(vm.recalls().length);
+
+                vm.isloading(false);
+                //alert(data.length);
+                //getfile();
+                // alert(JSON.stringify(vm.mans())) ;
+
+            }
+
+
+        </script>
+    </body>
+</html>
