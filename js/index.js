@@ -111,6 +111,8 @@ function gotfile(entry) {
     var msPerYear = msPerDay * 365;
 
     var days = diff / msPerDay;
+    //alert(localStorage.lastdownloaddaysago);
+    localStorage.lastdownloaddaysago = days;
     if (days > 7) {
         //alert('refres');
         downloadAsset();
@@ -138,7 +140,8 @@ function gotfile(entry) {
                 if (countfail >= 2)
                     alert("Error Occured!");
                 //
-                try{
+                try {
+                    bet.data.sort(function (left, right) { return left.Make == right.Make ? 0 : (left.Make < right.Make ? -1 : 1) });
                     vm.recalls(bet.data);
                     vm.getmans(bet.data);
                     vm.isloading(false);

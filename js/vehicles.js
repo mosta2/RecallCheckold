@@ -44,17 +44,18 @@ var app = {
 
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
+
+        console.log('Received Event: ' + id);
+        console.log('hello');
         getfile();
-        //readfile('vehicles.txt');
+        readfile('vehicles.txt');
     }
 
 };
 
 
 function getfile() {
-   var ch = window.sessionStorage.getItem("checked");
-   //if (!ch || ch != "1")
-       check3("RecallsFile.csv");
+    check3("RecallsFile.csv");
 
 }
 var countfail = 0;
@@ -66,7 +67,7 @@ function check3(fileName) {
     window.resolveLocalFileSystemURL(store + fileName, appStart, downloadAsset);
 }
 function appStart(entry) {
-   
+    //alert('ead' + ".txt" + JSON.stringify(entry.File()));
     var file = entry.file(gotfile, downloadAsset);
 
     //store = cordova.file.dataDirectory;
@@ -103,8 +104,6 @@ function gotfile(entry) {
     var now = d.getTime();
     var diff = now - filedate;
 
- 
-
     var msPerMinute = 60 * 1000;
     var msPerHour = msPerMinute * 60;
     var msPerDay = msPerHour * 24;
@@ -112,55 +111,52 @@ function gotfile(entry) {
     var msPerYear = msPerDay * 365;
 
     var days = diff / msPerDay;
-    window.sessionStorage.setItem("checked", "1");
-    window.sessionStorage.setItem("lastchecked", filedate);
-
     if (days > 7) {
         //alert('refres');
         downloadAsset();
 
     }
     else {
-
-        //vm.recalls(bet.data);
-        //vm.getmans(bet.data);
-        vm.isloading(false);
-        $('.help').addClass("hidden");
        // alert('opening');
-        //var reader = new FileReader();
-        //reader.onloadend = function (evt) {
-        //    //alert("read success");
-        //    try {
-        //        //data = $.csv2Array(evt.target.result);
-        //        // Parse CSV string
-        //       // alert(evt.target.result);
-        //        var bet = Papa.parse(evt.target.result.toString(), { header: true });
-        //        //alert(JSON.stringify(bet));
-        //        vm.isloading(true);
-        //        //var m = processData(evt.target.result);
-        //        //alert(bet.data);
+        var reader = new FileReader();
+        reader.onloadend = function (evt) {
+            //alert("read success");
+            try {
+                //data = $.csv2Array(evt.target.result);
+                // Parse CSV string
+               // alert(evt.target.result);
+                var bet = Papa.parse(evt.target.result.toString(), { header: true });
+                //alert(JSON.stringify(bet));
+                vm.isloading(true);
+                //var m = processData(evt.target.result);
+                //alert(bet.data);
 
-        //        if (!bet.data & countfail < 2) {
-        //            countfail += 1;
-        //            downloadAsset();
-        //        }
-        //        if (countfail >= 2)
-        //            alert("Error Occured!");
-        //        //
-        //        try{
+                if (!bet.data & countfail < 2) {
+                    countfail += 1;
+                    downloadAsset();
+                }
+                if (countfail >= 2)
+                    alert("Error Occured!");
+                //
+                try {
+                    bet.data.sort(function (left, right) { return left.Make == right.Make ? 0 : (left.Make < right.Make ? -1 : 1) });
+                    vm.recalls(bet.data);
+                    vm.getmans(bet.data);
+                    vm.isloading(false);
+                    $('.help').addClass("hidden");
 
-        //        //alert(JSON.stringify(vm.mans()));
-        //        } catch (e) { alert(e) }
-        //        //ko.mapping.fromJS(mans, vm.mans());
-        //        //alert(data.length);
-        //        //vm.recalls(data);
-        //        //alert(vm.mans().length);
-        //        vm.isloading(false);
-        //        //var csvAsArray = evt.target.result.csvToArray();
-        //        // alert(JSON.stringify(data));
-        //    } catch (e) { alert(e) }
-        //};
-        //reader.readAsText(entry);
+                //alert(JSON.stringify(vm.mans()));
+                } catch (e) { alert(e) }
+                //ko.mapping.fromJS(mans, vm.mans());
+                //alert(data.length);
+                //vm.recalls(data);
+                //alert(vm.mans().length);
+                vm.isloading(false);
+                //var csvAsArray = evt.target.result.csvToArray();
+                // alert(JSON.stringify(data));
+            } catch (e) { alert(e) }
+        };
+        reader.readAsText(entry);
 
     }
 

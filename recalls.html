@@ -67,11 +67,17 @@
 	<a href="index.html"  data-bind="visible: vm.searchresult().length-1 > idxcurrentreg(), click: function (index) { setcurrentreg(idxcurrentreg() + 1,index) }" data-icon="arrow-r">&nbsp;</a>
 </div>
             <!-- ko if: vm.currentreg().vehiclerecalls && vm.currentreg().vehiclerecalls().length >0 -->  
-                  <div data-role="collapsible-set" data-theme="b"  data-bind="foreach: vm.currentreg().vehiclerecalls" data-content-theme="d" >
+               
+                      <div data-role="collapsible-set" data-theme="b"  data-bind="foreach: vm.currentreg().vehiclerecalls" data-content-theme="d" >
                 <div   class="collapsible" >
-                    
-                    <h3 data-bind="text: Concern"></h3>
-                    <p data-bind="text: Defect"></p>
+                    <h4  ><span  style="font-size:small;" data-bind="text: Concern +'    #'+ RecallsNumber +'   '+ LaunchDate"></span></h4>
+                    <p >
+                         <span data-bind="visible: VINStart.length > 0 ,text: 'VIN Start: ' + VINStart + '   VIN End: ' + VINEnd "><br />
+                         </span>
+                        <span data-bind="visible: VINStart.length > 0"><br /></span>
+                        <span data-bind="text: Defect "></span><br /><br />
+                        <span data-bind="visible: Remedy.length > 0 ,text: 'Remedy: ' + Remedy"></span>
+                    </p>
                        
                 </div>
                         </div>
@@ -83,12 +89,13 @@
           
               
              <!-- /ko -->  
-                       <div data-bind="visible: novehicles">
+           
+                       <div data-bind="visible: novehicles() && !isloading()">
                 Duh! We need a vehicle,  <a href="vehicles.html" data-ajax="false">Click here to add your Vehicles</a></div>  
           
               
         </div>
-       
+  
 
         <script type="text/javascript">
 
@@ -188,7 +195,7 @@
                     write: function (newValue) { this.active(parseInt(newValue, 10)); },
                     owner: this
                 });
-                self.novehicles = ko.observable(false);
+                self.novehicles = ko.observable(true);
                 self.currentreg = ko.observable(Vehicle);
                 self.idxcurrentreg = ko.observable(0);
                 self.swiperow = function (reg) {
@@ -474,6 +481,10 @@
              .hidden {
                 display:none;
             }         
+                    .collapsible-set,.collapsible {
+           font-size: smaller;
+       }
+
         </style>
     </body>
 </html>

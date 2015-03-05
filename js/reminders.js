@@ -44,17 +44,18 @@ var app = {
 
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
-        getfile();
-        //readfile('vehicles.txt');
+
+        console.log('Received Event: ' + id);
+        console.log('hello');
+        //getfile();
+        readfile("reminders.txt");
     }
 
 };
 
 
 function getfile() {
-   var ch = window.sessionStorage.getItem("checked");
-   //if (!ch || ch != "1")
-       check3("RecallsFile.csv");
+    check3("RecallsFile.csv");
 
 }
 var countfail = 0;
@@ -66,7 +67,7 @@ function check3(fileName) {
     window.resolveLocalFileSystemURL(store + fileName, appStart, downloadAsset);
 }
 function appStart(entry) {
-   
+    //alert('ead' + ".txt" + JSON.stringify(entry.File()));
     var file = entry.file(gotfile, downloadAsset);
 
     //store = cordova.file.dataDirectory;
@@ -84,7 +85,7 @@ function downloadAsset() {
 
     var uri = encodeURI("http://www.leadyourweb.com/RecallsFile.csv");
     file_path = cordova.file.dataDirectory;
-    //alert("About to start transfer");
+   // alert("About to start transfer");
     fileTransfer.download(uri, file_path + 'RecallsFile.csv',
     	function (entry) {
     	    //alert("Success!" + file_path + 'RecallsFile.csv');
@@ -97,13 +98,11 @@ function downloadAsset() {
     	});
 }
 function gotfile(entry) {
-   // alert(entry.lastModifiedDate);
+    // alert(entry.lastModifiedDate);
     var d = new Date();
     var filedate = entry.lastModifiedDate;
     var now = d.getTime();
     var diff = now - filedate;
-
- 
 
     var msPerMinute = 60 * 1000;
     var msPerHour = msPerMinute * 60;
@@ -112,55 +111,50 @@ function gotfile(entry) {
     var msPerYear = msPerDay * 365;
 
     var days = diff / msPerDay;
-    window.sessionStorage.setItem("checked", "1");
-    window.sessionStorage.setItem("lastchecked", filedate);
-
     if (days > 7) {
         //alert('refres');
         downloadAsset();
 
     }
     else {
+        // alert('opening');
+        var reader = new FileReader();
+        reader.onloadend = function (evt) {
+            //alert("read success");
+            try {
+                vm.isloading(true);
 
-        //vm.recalls(bet.data);
-        //vm.getmans(bet.data);
-        vm.isloading(false);
-        $('.help').addClass("hidden");
-       // alert('opening');
-        //var reader = new FileReader();
-        //reader.onloadend = function (evt) {
-        //    //alert("read success");
-        //    try {
-        //        //data = $.csv2Array(evt.target.result);
-        //        // Parse CSV string
-        //       // alert(evt.target.result);
-        //        var bet = Papa.parse(evt.target.result.toString(), { header: true });
-        //        //alert(JSON.stringify(bet));
-        //        vm.isloading(true);
-        //        //var m = processData(evt.target.result);
-        //        //alert(bet.data);
+                //data = $.csv2Array(evt.target.result);
+                // Parse CSV string
+                // alert(evt.target.result);
+                var bet = Papa.parse(evt.target.result.toString(), { header: true });
+                //alert(JSON.stringify(bet));
+                //var m = processData(evt.target.result);
+                //alert(bet.data);
 
-        //        if (!bet.data & countfail < 2) {
-        //            countfail += 1;
-        //            downloadAsset();
-        //        }
-        //        if (countfail >= 2)
-        //            alert("Error Occured!");
-        //        //
-        //        try{
-
-        //        //alert(JSON.stringify(vm.mans()));
-        //        } catch (e) { alert(e) }
-        //        //ko.mapping.fromJS(mans, vm.mans());
-        //        //alert(data.length);
-        //        //vm.recalls(data);
-        //        //alert(vm.mans().length);
-        //        vm.isloading(false);
-        //        //var csvAsArray = evt.target.result.csvToArray();
-        //        // alert(JSON.stringify(data));
-        //    } catch (e) { alert(e) }
-        //};
-        //reader.readAsText(entry);
+                if (!bet.data & countfail < 2) {
+                    countfail += 1;
+                    downloadAsset();
+                }
+                if (countfail >= 2)
+                    alert("Error Occured!");
+                //
+                try {
+                    vm.recalls(bet.data);
+                    vm.getmans(bet.data);
+                    readfile('vehicles.txt');
+                    //alert(JSON.stringify(vm.mans()));
+                } catch (e) { alert(e) }
+                //ko.mapping.fromJS(mans, vm.mans());
+                //alert(data.length);
+                //vm.recalls(data);
+                //alert(vm.mans().length);
+                vm.isloading(false);
+                //var csvAsArray = evt.target.result.csvToArray();
+                // alert(JSON.stringify(data));
+            } catch (e) { alert(e) }
+        };
+        reader.readAsText(entry);
 
     }
 
@@ -205,10 +199,10 @@ function writefile(fileName, data) {
             fileEntry.createWriter(function (writer) { return gotFileWriter(writer, fileName, data); }, fail);
         }
         function gotFileWriter(writer, fileName, data) {
-           // alert(fileName);
-           // alert(data);
+            // alert(fileName);
+            // alert(data);
             writer.onwriteend = function (evt) {
-               // alert("contents of file now 'some sample text'");
+                // alert("contents of file now 'some sample text'");
                 //writer.truncate(11);
                 writer.onwriteend = function (evt) {
                     //console.log("contents of file now 'some sample'");
@@ -252,7 +246,7 @@ function writefile(fileName, data) {
         function writenow(writer, fileName, data) {
             //alert('writing now' + data);
             writer.onwriteend = function (evt) {
-               // alert("contents of file now 'some sample text'");
+                // alert("contents of file now 'some sample text'");
                 //writer.truncate(11);
                 writer.onwriteend = function (evt) {
                     //console.log("contents of file now 'some sample'");
@@ -264,7 +258,7 @@ function writefile(fileName, data) {
                 };
             };
             writer.write(data);
-           
+
         }
         function nodir(entry) {
 
@@ -294,47 +288,106 @@ function processData(allText) {
 
 
 function readfile(fileName) {
-    try{
+    try {
         store = cordova.file.dataDirectory;
-    } catch (e) { alert(e);}
-    window.resolveLocalFileSystemURL(store + fileName, function (reader) { return openfile(reader, fileName); }, filenotfound);
+       
+    } catch (e) { alert(e); }
+    window.resolveLocalFileSystemURL(store + fileName, function (reader) { return openfile(reader, fileName); }, function () { return filenotfound(fileName); });
 }
 function openfile(entry, fileName) {
     //alert('ead' + ".txt" + JSON.stringify(entry.File()));
     var file = entry.file(function (reader) { return readthis(reader, fileName); }, downloadAsset);
+    
 }
-function filenotfound() {
-    //alert("file not found!");
+function filenotfound(fileName) {
+    alert(fileName);
+    if (fileName == "reminders.txt")
+    {
+        readfile("vehicles.txt");
+    }
+    if (fileName == "vehicles.txt") {
+        vm.novehicles(true);
+        vm.isloading(false);
+    }
+    //alert("You don't have any vehicles!");
+    
 }
-function readthis(entry,fileName) {
+function readthis(entry, fileName) {
 
     //alert('opening');
     var reader = new FileReader();
     reader.onloadend = function (evt) {
-        //alert("read success");
+       // alert("read success");
         try {
             var son = ko.utils.parseJson(evt.target.result);
             //ko.mapping.fromJS(son, vm.searchresult());
             //alert(evt.target.result);
-            var i ;
-            for (i = 0; i < son.length; i++)
-            {
+            var i;
+            for (i = 0; i < son.length; i++) {
                 if (!son[i]) {
 
                     son.splice(i, 1);
                     //writefile(fileName, son);
                 }
             }
-            ko.mapping.fromJS(son, vm.searchresult);
-            vm.isloading(false);
+            if (fileName == "reminders.txt")
+            {
+                ko.mapping.fromJS(son, vm.reminders);
+                //vm.reminders(son);
+                //alert(JSON.stringify(vm.reminders()));
+                //return;
+                readfile("vehicles.txt");
 
-            //vm.searchresult(son);
+            }
+            if (fileName == "vehicles.txt")
+                {
+            ko.mapping.fromJS(son, vm.searchresult);
+                //vm.searchresult(son);
+            ///alert(JSON.stringify(vm.searchresult()));
             //alert('afte reaad:'+vm.searchresult().length);
-            //alert(JSON.stringify(vm.searchresult()));
-            //alert(JSON.stringify(vm.searchresult()));
+            var m = ko.mapping.toJSON(vm.searchresult()[0]);
+            //alert(m);
+           // alert(vm.reminders().length);
+            var i = 0;
+            if (vm.searchresult().length > 0 ) {
+                for (i; i < vm.searchresult().length; i++) {
+                    var array;
+                   // alert(JSON.stringify(vm.reminders()[0]));
+                    array = ko.utils.arrayFilter(vm.reminders(), function (item) {
+                     //  alert(item.Reg() + vm.searchresult()[i].Reg);
+                        return item.Reg() == vm.searchresult()[i].Reg();
+                    });
+                    ///alert('the rec:' + JSON.stringify(array));
+                    //alert(array.length);
+
+                    array.sort(function (l, r) { 
+                        return (Date.parse(l.date) == Date.parse(r.date) ? 0 : (Date.parse(l.date) > Date.parse(r.date) ? 1 : -1))
+                    });
+                    //ko.mapping.fromJS(array, vm.currentreg().vehiclerecalls);
+                    if (!vm.searchresult()[i]) {
+                        vm.searchresult().splice(i, 1);
+                        continue
+                    }
+                    //alert(JSON.stringify(vm.searchresult()[i]));
+                    vm.searchresult()[i].vehiclereminders(array);
+                    //alert('len' + vm.currentreg().vehiclerecalls().length);
+                    //var l = JSON.stringify(vm.searchresult()[i].vehiclerecalls());
+                    //alert('>>>' + l);
+                }
+
+                vm.currentreg(vm.searchresult()[0]);
+                //alert(ko.mapping.toJSON(vm.currentreg()));
+                vm.idxcurrentreg(0);
+                $('.collapsible').collapsible();
+                $('.help').addClass("hidden");
+                vm.isloading(false);
+                vm.novehicles(false);
+            }
+            }
+            else { vm.novehicles(true); vm.isloading(false); }
             //alert(son);
-            $('.help').addClass("hidden");
-        } catch (e) { alert(e) }
+
+        } catch (e) { alert('el>>' +e) }
     };
     reader.readAsText(entry);
 

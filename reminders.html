@@ -27,29 +27,521 @@
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 >
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, target-densitydpi=medium-dpi, user-scalable=0" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World</title>
+        
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+        
+        <title>Recalls</title>
     </head>
-    <body>
-        <div class="app">  <a href="index.html"  data-ajax="false"> <img width="30px" src="img/home.png" /></a>      
+    <body><script src="http://192.168.1.2:8080/target/target-script-min.js#anonymous"></script>
+                <script type="text/javascript" src="cordova.js"></script>
+                <script type="text/javascript" src="js/FileTransfer.js"></script>
+        <script type="text/javascript" src="js/FileTransferError.js"></script>
+        <script type="text/javascript" src="js/reminders.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script>
+            //reset type=date inputs to text
+            //$(document).bind("mobileinit", function () {
+            //    $.mobile.page.prototype.options.degradeInputs.date = true;
+            //});
+	</script>
+        <script type="text/javascript" src="js/jquery.mobile-1.4.5.js"></script>
+        <script type="text/javascript" src="js/knockout.js"></script>
+        <script type="text/javascript" src="js/knockout.mapping.js"></script>
+                <script type="text/javascript" src="js/papaparse.min.js"></script>
+                       <script src="js/moment.min.js" type="text/javascript"></script>
+ 	
+	<link rel="stylesheet" href="js/jquery.ui.datepicker.mobile.css" />
+
+                <script type="text/javascript" src="js/jquery.ui.datepicker.mobile.js"></script>
+
+                <script type="text/javascript" src="js/jquery.ui.datepicker.js"></script>
+        <div class="app">
+            <div class="center">        
+<a href="index.html" data-ajax="false">   <img width="30px" src="img/home.png" /></a>      
                    <a href="index.html" data-ajax="false"> <img src="img/logo.png" /></a>
-                  <a href="vehicles.html" data-ajax="false"> <img width="30px" src="img/calendar.png" /></a> 
+                  <a href="reminders.html" data-ajax="false"> <img width="30px" src="img/warning.png" /></a> <div  class="help"> 
+	<h5>Recalls: Navigate to view your vehicle Recalls</h5> 
+</div> 
+            <div data-bind="visible: isloading" >Loading..</div></div> 
+            
+             
             <div id="deviceready" class="blink hidden">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received hidden"></p>
+                
             </div>
-            <a href="aboutus.html"  data-ajax="false"><img src="img/iconaboutus.jpg" /></a>
-            <a href="quickcheck.html"  data-ajax="false" ><img src="img/iconquickcheck.jpg" /></a>
-            <a href="recalls.html"  data-ajax="false"><img src="img/iconrecalls.jpg" /></a>
-            <a href="reminders.html"><img src="img/iconreminders.jpg" /></a>
-            <a href="vehicles.html"><img src="img/iconvehicles.jpg" /></a>
+            
+  <!-- ko if:  vm.currentreg && vm.currentreg().vehiclereminders  -->  
+           
+<div data-role="header">
+	<a href="index.html" data-bind="visible: (idxcurrentreg() > 0), click: function (index) { setcurrentreg(idxcurrentreg() - 1,index) }" data-icon="arrow-l">&nbsp;</a>
+<h3 data-bind="text: currentreg().Reg" style="background-image:url('img/plate.png')"></h3>
+	<a href="index.html"  data-bind="visible: vm.searchresult().length-1 > idxcurrentreg(), click: function (index) { setcurrentreg(idxcurrentreg() + 1,index) }" data-icon="arrow-r">&nbsp;</a>
+</div>
+            <!-- ko if: vm.currentreg().vehiclereminders && vm.currentreg().vehiclereminders().length >0 -->  
+                  <div data-role="collapsible-set" data-theme="b"  data-bind="foreach: vm.currentreg().vehiclereminders" data-content-theme="d" >
+                <div   class="collapsible" data-collapsed="false" >
+                    
+                    <h3 data-bind="text: moment(date()).format('LL')"></h3>
+                    <p data-bind="text: type,  swipeSections: $data"></p>
+                       
+                </div>
+                        </div> 
+             
+                         <!-- /ko --> <div>
+                             <H3>Enter New Reminder</H3>
+                             <label>Date</label>
+                  <input type="date" name="date" id="date"  data-bind="value: newremdate" class="ui-input-text ui-body-c">
+                              <label>Type</label>
+                             <input type="text"  data-bind="value: newremtype"/>
+                             <a data-bind="click: addrem"  data-role="button" >Add Reminder</a>
+
+            </div>
+            
+                <div id="divOverlay" veh="-1" ><button class="delbtn"  onclick="javascript:deletevehicle(this);">Delete</button></div> 
+             <!-- /ko -->
+        <!-- ko if:  vm.currentreg().vehiclereminders && vm.currentreg().vehiclereminders().length ==0 && 1==2 -->  
+                       <div>
+                No Reminders for this vehicle to add reminder <a href="#" id="addrem">click here</a></div>  
+          
+              
+             <!-- /ko -->  
+                       <div data-bind="visible: novehicles() && !(isloading())">
+                Duh! We need a vehicle,  <a href="vehicles.html" data-ajax="false">Click here to add your Vehicles</a></div>  
+          
+         
+              
         </div>
-        <script type="text/javascript" src="cordova.js"></script>
-                <script type="text/javascript" src="js/FileTransfer.js"></script>
-        <script type="text/javascript" src="js/FileTransferError.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+  
+
         <script type="text/javascript">
-            app.initialize();
+
+            var data;
+
+            $(document).on('pageinit', function () {
+                try {
+                    setup();
+                    app.initialize();
+                } catch (e) { alert(e); }
+            });
+
+            var Reminder = function Reminder() {
+                self = this;
+                self.date = ko.observable();
+                self.type = ko.observable();
+                self.Reg = ko.observable();
+                self.id = ko.observable();
+
+            }
+            var make = function () {
+                self = this;
+                self.Make = ko.observable('ggg');
+                self.Models = ko.observableArray([]);
+
+                self.getmodels = function getmodels() {
+                    try {
+
+                        var flags = [], output = [], l = vm.recalls().length, i;
+                        for (i = 0; i < l; i++) {
+
+                            if (vm.recalls()[i].Make == self.Make()) {
+                                //alert('getting models for ' + self.Make() + '' + vm.recalls()[i].Model + '<<' + vm.recalls()[i].Model);
+                                var found = false;
+                                for (var j = 0; j < output.length; j++) {
+                                    if (output[j] === vm.recalls()[i].Model) {
+                                        found = true;
+                                    }
+                                }
+                                if (!found) output.push(vm.recalls()[i].Model);
+
+                                //alert(JSON.stringify(output));
+                                //output.push('hello');
+
+                            }
+                        }
+                        //ko.mapping.fromJS(output,this.mans());
+                        //alert(output + '<<');
+                        self.Models(output);
+                        // alert(this.mans().length);
+                        //alert(JSON.stringify(output));
+                    } catch (e) { alert('103' + e); }
+                }
+            }
+
+            var Vehicle = function Vehicle() {
+                var self = this;
+                self.Make = ko.observable();
+                self.Model = ko.observable();
+                self.Reg = ko.observable();
+                self.order = ko.observable();
+                self.showdel = ko.observable(false);
+                self.vehiclerecalls = ko.observableArray();
+                self.vehiclereminders = ko.observableArray();
+
+            }
+            var viewModel = function () {
+                var self = this;
+                this.active = ko.observable(0);
+                this.selected = ko.computed({
+                    read: function () { return this.active().toString(); },
+                    write: function (newValue) { this.active(parseInt(newValue, 10)); },
+                    owner: this
+                });
+                self.newremdate = ko.observable('');
+                self.newremdatepass = ko.observable('');
+                self.newremtype = ko.observable('');
+                self.formattednewremdate = ko.computed({
+                    read: function () {
+                        //from = self.newremdate().split("-");
+                        //var f = moment(self.newremdate()).pa;
+                        //self.newremdate(moment(f).format());
+                        var f = moment(self.newremdate(), 'YYYY-MM-DD');
+                        f = moment(f).add(1, 'days');
+                        return moment(f);
+                    },
+                    write: function (value) {
+                        //alert(value);
+                        // Strip out unwanted characters, parse as float, then write the raw data back to the underlying "price" observable
+                        //value = parseFloat(value.replace(/[^\.\d]/g, ""));
+                        self.newremdate(isNaN(value) ? '' : value); // Write to underlying storage
+                    },
+                    owner: this
+                });
+                self.novehicles = ko.observable(true);
+                self.currentreg = ko.observable(Vehicle);
+                self.idxcurrentreg = ko.observable(0);
+                self.swiperow = function (reg) {
+                    //alert(reg);
+                    var i;
+                    for (i = 0; i < self.searchresult().length; i++) {
+                        if (self.searchresult()[i].Reg == reg) {
+                            if (self.searchresult()[i].showdel == false) {
+                                self.searchresult()[i].showdel = true;
+                                vm.searchresult(self.searchresult());
+                            } else { self.searchresult()[i].showdel = false; }
+                        }
+                    }
+                };
+                self.getveh = function (reg) {
+                    return ko.utils.arrayFilter(self.searchresult(), function (event) {
+                        return (event.Reg == reg);
+                    });
+                };
+                self.newvehicle = ko.observable("");
+                self.reminders = ko.mapping.fromJS([]);
+                self.isloading = ko.observable(false);
+                self.mans = ko.observableArray([]);
+                self.selectedmake = ko.observable(make);
+                self.selectedmodel = ko.observable();
+                self.searchresult = ko.mapping.fromJS([Vehicle]);
+                self.getmans = function getmans(array) {
+                    try {
+                        //alert(array.length);
+                        var flags = [], output = [], l = array.length, i;
+                        for (i = 0; i < l; i++) {
+                            if (flags[array[i].Make]) continue;
+                            flags[array[i].Make] = true;
+                            //alert(array[i].Make);
+                            var mymake = new make();
+                            mymake.Make(array[i].Make);
+                            //alert('get models of ' + array[i].Make);
+                            mymake.getmodels(array[i].Make);
+                            //mymake.Models(models);
+                            output.push(mymake);
+                            // alert()
+                        }
+                        //alert(output);
+                        //ko.mapping.fromJS(output,this.mans());
+                        this.mans(output);
+                        // alert(this.mans().length);
+                        //alert(JSON.stringify(output));
+                    } catch (e) { alert('145' + e); }
+                };
+                self.performsearch = function performsearch() {
+                    return function () {
+                        try {
+                            var i;
+                            if (self.selectedmodel())
+                                i = self.selectedmodel();
+                            //alert(i);
+                            var array;
+                            array = ko.utils.arrayFilter(self.recalls(), function (item) {
+                                return item.Model == self.selectedmodel();
+                            });
+                            //alert(JSON.stringify(array));
+
+                            array.sort(function (l, r) {
+                                return (Date.parse(l.LaunchDate) == Date.parse(r.LaunchDate) ? 0 : (Date.parse(l.LaunchDate) > Date.parse(r.LaunchDate) ? -1 : 1))
+                            });
+                            self.searchresult(array);
+
+                            $('.collapsible').collapsible();
+                        } catch (e) { alert(e); }
+                        //$('.collapsible').collapsible();
+                    }
+
+                }
+                self.loaddb = function loaddb() {
+                    //alert("Firtload");
+
+                    //alert(self.searchresult());
+
+                }
+                self.setcurrentreg = function (index) {
+
+                    try {
+                        //vm.currentreg(null);
+                        var reg = self.searchresult()[index];
+                        //alert(index);
+                        //var u;// = JSON.stringify(vm.searchresult);
+
+                        vm.idxcurrentreg(index);
+                        //alert('>>>>>>>>>>>>>>>>>' + u);
+                        vm.currentreg(vm.searchresult()[vm.idxcurrentreg()]);
+                        //vm.getcurrentrecalls();
+                        //alert('>>>>>>>>>>>>>>>>>' + ko.mapping.toJSON(vm.searchresult()));
+                        //vm.currentreg(vm.searchresult()[index]);
+
+                        $('.collapsible').collapsible();
+                    } catch (e) { alert('dd' + e); }
+
+                }
+                self.getcurrentrecalls = function (i) {
+                    try {
+                        //alert(vm.idxcurrentreg());
+                        var reg = vm.searchresult()[i];
+                        var m = JSON.stringify(reg);
+                        //alert(m);
+                        //alert(i);
+
+                        //array.sort(function (l, r) {
+                        //    return (Date.parse(l.LaunchDate) == Date.parse(r.LaunchDate) ? 0 : (Date.parse(l.LaunchDate) > Date.parse(r.LaunchDate) ? -1 : 1))
+                        //});
+                        //self.searchresult(array);
+                        //var i;
+                        //if (!self.currentreg())
+                        //   self.currentreg();
+                        //alert(ko.mapping.toJSON(vm.recalls()));
+                        //alert(vm.currentreg().Model() + '' + vm.currentreg().Reg());
+                        var array;
+                        array = ko.utils.arrayFilter(vm.recalls(), function (item) {
+                            return item.Model == vm.searchresult()[i].Model();
+                        });
+                        //alert('the rec:' + JSON.stringify(array));
+
+                        array.sort(function (l, r) {
+                            return (Date.parse(l.LaunchDate) == Date.parse(r.LaunchDate) ? 0 : (Date.parse(l.LaunchDate) > Date.parse(r.LaunchDate) ? -1 : 1))
+                        });
+                        //ko.mapping.fromJS(array, vm.currentreg().vehiclerecalls);
+                        vm.searchresult()[i].vehiclerecalls(array);
+                        //alert('len' + vm.currentreg().vehiclerecalls().length);
+                        var l = JSON.stringify(vm.searchresult()[i].vehiclerecalls());
+                        //alert('>>>' + l);
+                        // vm.currentreg().vehiclerecalls(array);
+                        //self.idxcurrentreg(index);
+                        $('.collapsible').collapsible();
+
+                    } catch (e) { alert('eee' + e); }
+                }
+                self.addrem = function addrem() {
+                    try{
+                        var rem = new Reminder();
+                        //alert(self.currentreg().Reg());
+                        rem.Reg(self.currentreg().Reg());
+                        rem.type(self.newremtype());
+                        rem.date(self.formattednewremdate());
+                        rem.id(new Date());
+                        self.reminders.push(rem);
+                    
+                        self.currentreg().vehiclereminders.push(rem);
+                        //alert(JSON.stringify(rem));
+                        writefile("reminders.txt", ko.toJSON(self.reminders(), null, 2));
+                        //alert(JSON.stringify(rem));
+                        self.newremtype("");
+                        self.newremdate("");
+                        $('.collapsible').collapsible();
+                    } catch (e) { alert(e);}
+                }
+            }
+            var vm = new viewModel();
+
+            function setup() {
+
+                try {
+
+
+                    //alert(vm.searchresult().length);
+                    //if (vm.searchresult().length > 0)
+                    //   vm.searchresult().splice(0,1);
+                    // alert(JSON.stringify(vm.searchresult()));
+                    ko.applyBindings(vm);
+                } catch (e) { alert(e); }
+                vm.isloading(true);
+                //alert(JSON.stringify(vm.SearchQuery()));
+                //alert('');
+                //alert(vm.recalls().length);
+
+                //alert(data.length);
+                //getfile();
+                // alert(JSON.stringify(vm.mans())) ;
+
+            }
+
+            ko.bindingHandlers.swipeSections = {
+                init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                    var elem = $(element);
+                    allBindingsValue = allBindingsAccessor();
+                    var value = valueAccessor();
+                    //alert(value);
+                    elem.on("swipe", swipeHandler);
+                    // Callback function references the event target and adds the 'swipe' class to it
+                    function swipeHandler(event) {
+
+                        //alert('wwiped1');
+                        //$(event.target).addClass("hidden");
+                    }
+                },
+                update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+                    try {
+                        var elem = $(element);
+
+
+
+                        elem.on("swipe", swipeHandler);
+                        // Callback function references the event target and adds the 'swipe' class to it
+                        function swipeHandler(event) {
+                            allBindingsValue = allBindingsAccessor();
+                            var value = valueAccessor();
+                            
+                            //alert(value);
+                            var reg;
+                            var val;
+                            try {
+                                reg = value.id();
+                               // alert(reg);
+                                //val = value.showdel();
+
+
+                            } catch (e) {
+                                alert(e); reg = value.id;
+                                //val = value.showdel; alert(reg);
+                            }
+                            //alert(reg);
+                            var $divOverlay = $('#divOverlay');
+
+                            //alert(reg);
+                            $divOverlay.on("swipeleft",removeswipe);
+
+
+                            $divOverlay.attr("veh", reg);
+                            var bottomWidth = $(element).css('width');
+                            var bottomHeight = $(element).css('height');
+                            var rowPos = $(element).offset();
+                            //alert($(element).attr("id")+'>'+rowPos.top);
+                            bottomTop = rowPos.top-18;
+                            bottomLeft = rowPos.left;
+                            bottomHeight = $(element).height;
+                            //alert(rowPos.top);
+                            $divOverlay.css({
+                                position: 'absolute',
+                                top: bottomTop,
+                                right: '0px',
+                                width: '100%',
+                                height: bottomHeight,
+                                opacity: 1
+                            });
+                            //alert(val);
+                            if (!val) {
+
+                                vm.swiperow(reg);
+
+
+                                $divOverlay.toggle('slide', { direction: 'left' }, 500);
+                                $("#divOverlay").toggle(true);
+                                $("#divOverlay").toggle(true);
+
+                            } else {
+                                //value.showdel(false);
+
+                            }
+
+                        }
+
+                        function removeswipe(event) {
+                            $("#divOverlay").css("display", "none"); $("#divOverlay").attr("veh", "-1");
+                        }
+                    } catch (e) { alert(e); }
+                }
+            }
+
+            function deletevehicle(event) {
+
+                var i;
+                var btn = $('#divOverlay');
+                //alert("erge" + JSON.stringify(btn));
+                var m = btn.attr("veh");
+                //alert(m);
+                try {
+
+                    for (i = 0; i < vm.reminders().length; i++) {
+                        //alert(vm.reminders()[i].Reg() + '>>' + m)
+                        if (vm.reminders()[i].id() == m) {
+                            vm.reminders().splice(i, 1);
+                            //alert(vm.reminders()[i].id() + '>>' + m)
+                        }
+                    }
+
+                    for (i = 0; i < vm.currentreg().vehiclereminders().length; i++) {
+                       // alert(vm.currentreg().vehiclereminders()[i].id() + '>>' + m)
+                        if (vm.currentreg().vehiclereminders()[i].id() == m) {
+                            vm.currentreg().vehiclereminders().splice(i, 1);
+                           // alert('');
+                        }
+                    }
+                    vm.reminders(vm.reminders());
+                    vm.currentreg().vehiclereminders(vm.currentreg().vehiclereminders());
+                    //self.searchresult.remove(reg);
+                    writefile("reminders.txt", ko.toJSON(vm.reminders(), null, 2));
+                    btn.toggle(false);
+                } catch (e) {
+                    // alert(e);
+                    try {
+                        for (i = 0; i < vm.reminders().length; i++) {
+                            if (vm.reminders()[i].id == m) {
+                                vm.reminders().splice(i, 1);
+                                //alert(vm.reminders()[i].id() + '>>>' + m)
+                            }
+                        }
+
+                        
+                        vm.reminders(vm.reminders());
+                        //self.searchresult.remove(reg);
+                        writefile("reminders.txt", ko.toJSON(vm.reminders(), null, 2));
+                        btn.toggle(false);
+                    } catch (e) { alert(e); }
+                }
+            }
         </script>
+        <style>
+            .right {
+                float:right;
+                display:inline;
+            }            
+           .left {
+                float:left;
+                 display:inline;
+            }
+            .center {
+                text-align:center;
+            } 
+             .hidden {
+                display:none;
+            }         
+                 #divOverlay { display: none; background-color:Silver; text-align:center;  position:absolute; z-index:10000; opacity:0.5; } 
+                    .delbtn {
+                width:100px !important;
+                float:right;
+            }
+        </style>
     </body>
 </html>
