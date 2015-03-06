@@ -119,6 +119,7 @@ function gotfile(entry) {
     else {
        // alert('opening');
         var reader = new FileReader();
+        var reader2 = new FileReader();
         reader.onloadend = function (evt) {
             //alert("read success");
             try {
