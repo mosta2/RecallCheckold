@@ -124,42 +124,72 @@ function gotfile(entry) {
             try {
                 //data = $.csv2Array(evt.target.result);
                 // Parse CSV string
-                alert(evt.target.result);
-                var bet = Papa.parse(evt.target.result.toString(), { header: true });
-                //alert(JSON.stringify(bet));
-                vm.isloading(true);
-                //var m = processData(evt.target.result);
-                //alert(bet.data);
-
-                if (!bet.data & countfail < 2) {
-                    countfail += 1;
-                    downloadAsset();
+                if (evt.target.result) {
+                    var bet = Papa.parse(evt.target.result.toString(), { header: true });
+                    //alert(JSON.stringify(bet));
+                    if (!bet.data & countfail < 2) {
+                        countfail += 1;
+                        downloadAsset();
+                    }
+                    init(bet);
                 }
-                if (countfail >= 2)
-                    alert("Error Occured!");
-                //
-                try {
-                    bet.data.sort(function (left, right) { return left.Make == right.Make ? 0 : (left.Make < right.Make ? -1 : 1) });
-                    vm.recalls(bet.data);
-                    vm.getmans(bet.data);
-                    vm.isloading(false);
-                    $('.help').addClass("hidden");
+                else {
+                    reader2.readAsText(entry);
+                    reader2.onloadend = function (evt) {
+                        //alert("read success");
+                        try {
+                            //data = $.csv2Array(evt.target.result);
+                            // Parse CSV string
+                            if (evt.target.result) {
+                                var bet = Papa.parse(evt.target.result.toString(), { header: true });
+                                //alert(JSON.stringify(bet));
+                                if (!bet.data & countfail < 2) {
+                                    countfail += 1;
+                                    downloadAsset();
+                                }
+                                init(bet);
+                            }
+                            else {
+                            }
 
-                //alert(JSON.stringify(vm.mans()));
-                } catch (e) { alert(e) }
-                //ko.mapping.fromJS(mans, vm.mans());
-                //alert(data.length);
-                //vm.recalls(data);
-                //alert(vm.mans().length);
-                vm.isloading(false);
-                //var csvAsArray = evt.target.result.csvToArray();
-                // alert(JSON.stringify(data));
-            } catch (e) { alert(e) }
+                            //var csvAsArray = evt.target.result.csvToArray();
+                            // alert(JSON.stringify(data));
+                        } catch (e) { alert(e) }
+                    }
+
+                    //var csvAsArray = evt.target.result.csvToArray();
+                    // alert(JSON.stringify(data));
+                }
+            }catch (e) { alert(e) }
         };
         reader.readAsText(entry);
 
     }
 
+}
+function init(bet) {
+    vm.isloading(true);
+    //var m = processData(evt.target.result);
+    //alert(bet.data);
+
+    
+    if (countfail >= 2)
+        alert("Error Occured!");
+    //
+    try {
+        bet.data.sort(function (left, right) { return left.Make == right.Make ? 0 : (left.Make < right.Make ? -1 : 1) });
+        vm.recalls(bet.data);
+        vm.getmans(bet.data);
+        vm.isloading(false);
+        $('.help').addClass("hidden");
+
+        //alert(JSON.stringify(vm.mans()));
+    } catch (e) { alert(e) }
+    //ko.mapping.fromJS(mans, vm.mans());
+    //alert(data.length);
+    //vm.recalls(data);
+    //alert(vm.mans().length);
+    vm.isloading(false);
 }
 function writefile(fileName, data) {
     //store = cordova.file.dataDirectory;
