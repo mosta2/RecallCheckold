@@ -124,7 +124,7 @@ function gotfile(entry) {
             try {
                 //data = $.csv2Array(evt.target.result);
                 // Parse CSV string
-               // alert(evt.target.result);
+                alert(evt.target.result);
                 var bet = Papa.parse(evt.target.result.toString(), { header: true });
                 //alert(JSON.stringify(bet));
                 vm.isloading(true);
