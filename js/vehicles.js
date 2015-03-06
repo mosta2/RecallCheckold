@@ -119,13 +119,12 @@ function gotfile(entry) {
     else {
        // alert('opening');
         var reader = new FileReader();
-        var reader2 = new FileReader();
         reader.onloadend = function (evt) {
             //alert("read success");
             try {
                 //data = $.csv2Array(evt.target.result);
                 // Parse CSV string
-                if (evt.target.result) {
+                if (!evt.target.result) {
                     var bet = Papa.parse(evt.target.result.toString(), { header: true });
                     //alert(JSON.stringify(bet));
                     if (!bet.data & countfail < 2) {
@@ -134,7 +133,9 @@ function gotfile(entry) {
                     }
                     init(bet);
                 }
+
                 else {
+                    var reader2 = new FileReader();
                     reader2.readAsText(entry);
                     reader2.onloadend = function (evt) {
                         //alert("read success");
