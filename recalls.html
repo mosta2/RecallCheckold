@@ -24,9 +24,14 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
+<<<<<<< HEAD
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 >
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, target-densitydpi=medium-dpi, user-scalable=0" />
+=======
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+>>>>>>> origin/master
         
         <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
         
@@ -44,10 +49,14 @@
         <script type="text/javascript" src="js/knockout.mapping.js"></script>
                 <script type="text/javascript" src="js/papaparse.min.js"></script>
         <div class="app">
+<<<<<<< HEAD
             <div class="center">        
 <a href="index.html" data-ajax="false">   <a href="index.html"  data-ajax="false"> <img width="30px" src="img/home.png" /></a>      
                    <a href="index.html" data-ajax="false"> <img  style="min-width:242px;min-height:107px" src="img/logo.png" /></a>
                   <a href="recalls.html" data-ajax="false"> <img width="30px" src="img/warning.png" /></a> <div  class="help"> 
+=======
+            <div class="center">           <a href="index.html" data-ajax="false"> <img src="img/logo.png" /></a><div  class="help"> 
+>>>>>>> origin/master
 	<h5>Recalls: Navigate to view your vehicle Recalls</h5> 
 </div> 
             <div data-bind="visible: isloading" >Loading..</div></div> 
@@ -67,6 +76,7 @@
 	<a href="index.html"  data-bind="visible: vm.searchresult().length-1 > idxcurrentreg(), click: function (index) { setcurrentreg(idxcurrentreg() + 1,index) }" data-icon="arrow-r">&nbsp;</a>
 </div>
             <!-- ko if: vm.currentreg().vehiclerecalls && vm.currentreg().vehiclerecalls().length >0 -->  
+<<<<<<< HEAD
                
                       <div data-role="collapsible-set" data-theme="b"  data-bind="foreach: vm.currentreg().vehiclerecalls" data-content-theme="d" >
                 <div   class="collapsible" >
@@ -78,6 +88,13 @@
                         <span data-bind="text: Defect "></span><br /><br />
                         <span data-bind="visible: Remedy.length > 0 ,text: 'Remedy: ' + Remedy"></span>
                     </p>
+=======
+                  <div data-role="collapsible-set" data-theme="b"  data-bind="foreach: vm.currentreg().vehiclerecalls" data-content-theme="d" >
+                <div   class="collapsible" >
+                    
+                    <h3 data-bind="text: Concern"></h3>
+                    <p data-bind="text: Defect"></p>
+>>>>>>> origin/master
                        
                 </div>
                         </div>
@@ -89,13 +106,21 @@
           
               
              <!-- /ko -->  
+<<<<<<< HEAD
            
                        <div data-bind="visible: novehicles() && !isloading()">
+=======
+                       <div data-bind="visible: novehicles">
+>>>>>>> origin/master
                 Duh! We need a vehicle,  <a href="vehicles.html" data-ajax="false">Click here to add your Vehicles</a></div>  
           
               
         </div>
+<<<<<<< HEAD
   
+=======
+       
+>>>>>>> origin/master
 
         <script type="text/javascript">
 
@@ -195,7 +220,11 @@
                     write: function (newValue) { this.active(parseInt(newValue, 10)); },
                     owner: this
                 });
+<<<<<<< HEAD
                 self.novehicles = ko.observable(true);
+=======
+                self.novehicles = ko.observable(false);
+>>>>>>> origin/master
                 self.currentreg = ko.observable(Vehicle);
                 self.idxcurrentreg = ko.observable(0);
                 self.swiperow = function (reg) {
@@ -481,10 +510,13 @@
              .hidden {
                 display:none;
             }         
+<<<<<<< HEAD
                     .collapsible-set,.collapsible {
            font-size: smaller;
        }
 
+=======
+>>>>>>> origin/master
         </style>
     </body>
 </html>

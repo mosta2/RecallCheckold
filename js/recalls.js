@@ -289,7 +289,10 @@ function processData(allText) {
 function readfile(fileName) {
     try {
         store = cordova.file.dataDirectory;
+<<<<<<< HEAD
        
+=======
+>>>>>>> origin/master
     } catch (e) { alert(e); }
     window.resolveLocalFileSystemURL(store + fileName, function (reader) { return openfile(reader, fileName); }, filenotfound);
 }
@@ -298,7 +301,11 @@ function openfile(entry, fileName) {
     var file = entry.file(function (reader) { return readthis(reader, fileName); }, downloadAsset);
 }
 function filenotfound() {
+<<<<<<< HEAD
     //alert("You don't have any vehicles!");
+=======
+    alert("file not found!");
+>>>>>>> origin/master
 }
 function readthis(entry, fileName) {
 
@@ -353,7 +360,10 @@ function readthis(entry, fileName) {
                 $('.collapsible').collapsible();
                 $('.help').addClass("hidden");
                 vm.isloading(false);
+<<<<<<< HEAD
                 vm.novehicles(false);
+=======
+>>>>>>> origin/master
             }
             else { vm.novehicles(true); vm.isloading(false); }
             //alert(son);

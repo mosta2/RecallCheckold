@@ -7,21 +7,33 @@
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="msapplication-tap-highlight" content="no" />
+<<<<<<< HEAD
         <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 >
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, target-densitydpi=medium-dpi, user-scalable=0" />
+=======
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+>>>>>>> origin/master
 
          <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
         
         <title>Quick Check</title>
     </head>
     <body>
+<<<<<<< HEAD
 
         <div class="app">
                         <div class="center">          
                               <a href="index.html"  data-ajax="false"> <img width="30px" src="img/home.png" /></a>      
                    <a href="index.html" data-ajax="false"> <img  style="min-width:242px;min-height:107px" src="img/logo.png" /></a>
                   <a href="quickcheck.html" data-ajax="false"> <img width="30px" src="img/accept.png" /></a> <div  class="help"> 
+=======
+                
+
+        <div class="app">
+                        <div class="center">           <a href="index.html" data-ajax="false"> <img src="img/logo.png" /></a><div  class="help"> 
+>>>>>>> origin/master
 	<h5>Quick Check: Select Model to search its Recalls</h5> 
 </div> 
 </div> 
@@ -47,6 +59,7 @@
 
                     <div data-role="collapsible-set" data-theme="b"  data-bind="foreach: searchresult" data-content-theme="d" >
                 <div   class="collapsible" >
+<<<<<<< HEAD
                     <h4  ><span  style="font-size:small;" data-bind="text: Concern +'    #'+ RecallsNumber +'   '+ LaunchDate"></span></h4>
                     <p >
                          <span data-bind="visible: VINStart.length > 0 ,text: 'VIN Start: ' + VINStart + '   VIN End: ' + VINEnd "><br />
@@ -55,13 +68,20 @@
                         <span data-bind="text: Defect "></span><br /><br />
                         <span data-bind="visible: Remedy.length > 0 ,text: 'Remedy: ' + Remedy"></span>
                     </p>
+=======
+                    <h3 data-bind="text: Concern"></h3>
+                    <p data-bind="text: Defect"></p>
+>>>>>>> origin/master
                        
                 </div>
                         </div>
                 </div>
 
         </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
         <script type="text/javascript" src="cordova.js"></script>
                 <script type="text/javascript" src="js/FileTransfer.js"></script>
         <script type="text/javascript" src="js/FileTransferError.js"></script>
@@ -72,7 +92,10 @@
         <script type="text/javascript" src="js/knockout.mapping.js"></script>
     <script  type="text/javascript" src="js/jquery.mobile-1.4.5.js"></script>
                 <script type="text/javascript" src="js/papaparse.min.js"></script>
+<<<<<<< HEAD
                                        <script src="js/moment.min.js" type="text/javascript"></script>
+=======
+>>>>>>> origin/master
 
         <script type="text/javascript">
             var data;
@@ -130,7 +153,10 @@
                         }
                         //ko.mapping.fromJS(output,this.mans());
                         //alert(output + '<<');
+<<<<<<< HEAD
                         output.sort();
+=======
+>>>>>>> origin/master
                         self.Models(output);
                         // alert(this.mans().length);
                         //alert(JSON.stringify(output));
@@ -156,6 +182,10 @@
 
                 self.getmans = function getmans(array) {
                     try {
+<<<<<<< HEAD
+=======
+                        //alert(array.length);
+>>>>>>> origin/master
                         var flags = [], output = [], l = array.length, i;
                         for (i = 0; i < l; i++) {
                             if (flags[array[i].Make]) continue;
@@ -163,15 +193,27 @@
                             //alert(array[i].Make);
                             var mymake = new make();
                             mymake.Make(array[i].Make);
+<<<<<<< HEAD
                             mymake.getmodels(array[i].Make);
                             //mymake.Models(models);
                             if (array[i].Make && array[i].Make.toString().trim().length > 0)
                                 output.push(mymake);
+=======
+                            //alert('get models of ' + array[i].Make);
+                            mymake.getmodels(array[i].Make);
+                            //mymake.Models(models);
+                            output.push(mymake);
+>>>>>>> origin/master
                             // alert()
                         }
                         //alert(output);
                         //ko.mapping.fromJS(output,this.mans());
                         this.mans(output);
+<<<<<<< HEAD
+=======
+                        // alert(this.mans().length);
+                        //alert(JSON.stringify(output));
+>>>>>>> origin/master
                     } catch (e) { alert('145' + e); }
                 };
                 self.performsearch = function performsearch() {
@@ -196,6 +238,7 @@
             var vm = new viewModel();
             function setup() {
 
+<<<<<<< HEAD
                 try{
                     ko.applyBindings(vm);
                     vm.isloading(true);
@@ -208,6 +251,20 @@
                     //getfile();
                     // alert(JSON.stringify(vm.mans())) ;
                 } catch (e) { alert(e);}
+=======
+
+                ko.applyBindings(vm);
+                vm.isloading(true);
+                //alert(JSON.stringify(vm.SearchQuery()));
+
+                //alert(vm.recalls().length);
+
+                //vm.isloading(false);
+                //alert(data.length);
+                //getfile();
+                // alert(JSON.stringify(vm.mans())) ;
+
+>>>>>>> origin/master
             }
 
 
@@ -219,9 +276,12 @@
         .hidden {
             display:none;
         }
+<<<<<<< HEAD
        .collapsible-set,.collapsible {
            font-size: smaller;
        }
+=======
+>>>>>>> origin/master
 
     </style>  </body>
    
